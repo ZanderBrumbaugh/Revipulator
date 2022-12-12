@@ -1,42 +1,110 @@
-Copy code
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Centered Title</title>
-    <style>
-      body {
-        font-family: sans-serif;
-        background-color: #F0F8FF; /* Light blue background color */
-      }
 
-      .center {
-        text-align: center;
-      }
+<head>
+  <title>Revipulator: A Generalized Amazon Review Generator</title>
+  <style>
+    body {
+      font-family: sans-serif;
 
-      #prompt {
-        width: 300px;
-        height: 30px;
-        padding: 5px;
-        border: 1px solid #ccc;
-        font-size: 16px;
-      }
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(to right, red, blue);
+    }
 
-      #output {
-        width: 300px;
-        height: 30px;
-        padding: 5px;
-        border: 1px solid #ccc;
-        font-size: 16px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1 class="center">Centered Title</h1>
-    <div class="center">
-      <label for="prompt">Enter a prompt:</label><br>
-      <input type="text" id="prompt"><br><br>
-      <label for="output">Output:</label><br>
-      <input type="text" id="output" disabled>
-    </div>
-  </body>
+    .center {
+      text-align: center;
+    }
+
+    #prompt {
+      width: 300px;
+      height: 30px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    #output {
+      width: 300px;
+      height: 30px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    #select-int {
+      width: 50px;
+      height: 30px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #4CAF50;
+      /* Green background color */
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="center">Revipulator: A Generalized Amazon Review Generator</h1>
+  <div class="center">
+    <label for="select-int">Enter a star value:</label>
+    <select id="select-int">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+    <br><br>
+    <label for="prompt">Enter a product name:</label>
+
+    <br><br>
+    <input type="text" id="prompt">
+    <br><br>
+
+    <label for="output">Output:</label><br>
+    <input type="text" id="output" disabled>
+    <br><br>
+    <input type="submit" value="Submit" id="submit-button">
+  </div>
+  <script>
+    const body = document.querySelector('body');
+
+    // Add a mousemove event listener to the body
+    body.addEventListener('mousemove', event => {
+      // Get the x and y coordinates of the mouse cursor
+      const x = event.clientX / 3;
+      const y = event.clientY / 3;
+
+      // Create a new gradient based on the mouse position
+      const gradient = `linear-gradient(to right, rgb(${x % 255}, ${y % 255}, 100), rgb(${y % 255}, ${x % 255}, 100))`;
+
+      // Set the background of the body to the new gradient
+      body.style.setProperty('background', gradient);
+    })
+
+    const submitButton = document.getElementById('submit-button');
+    submitButton.addEventListener('click', () => {
+      // Get the value of the input textbox
+      const input = document.getElementById('prompt').value;
+
+      // Build the query string from the input value
+      const queryString = `?input=${encodeURIComponent(input)}`;
+
+      fetch(`/api${queryString}`)
+        .then(response => response.json())
+        .then(response => {
+          document.getElementById('output').value = response;
+        });
+    })
+  </script>
+</body>
+
 </html>
